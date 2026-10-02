@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BattleTasks</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <h1>BattleTasks</h1>
+        <div id="game-status">Prepare your fleet...</div>
+    </header>
+
+    <main>
+        <section id="player-territory" class="territory">
+            <h2>My Territory</h2>
+            <div class="grid-container">
+                <div class="column-labels">
+                    <div>A</div>
+                    <div>B</div>
+                    <div>C</div>
+                </div>
+                <div class="row-labels">
+                    <div>1</div>
+                    <div>2</div>
+                    <div>3</div>
+                    <div>4</div>
+                    <div>5</div>
+                    <div>6</div>
+                    <div>7</div>
+                </div>
+                <div id="player-grid" class="grid">
+                    <!-- Grid cells generate here -->
+                </div>
+            </div>
+            <div class="controls">
+                <button id="new-game-btn" class="btn secondary">New Game</button>
+                <button id="begin-battle-btn" class="btn primary" disabled>Begin Battle</button>
+            </div>
+        </section>
+
+        <section id="opponent-territory" class="territory">
+            <h2>Opponent Waters</h2>
+            <div class="grid-container">
+                <div class="column-labels">
+                    <div>A</div>
+                    <div>B</div>
+                    <div>C</div>
+                </div>
+                <div class="row-labels">
+                    <div>1</div>
+                    <div>2</div>
+                    <div>3</div>
+                    <div>4</div>
+                    <div>5</div>
+                    <div>6</div>
+                    <div>7</div>
+                </div>
+                <div id="opponent-grid" class="grid">
+                    <!-- Grid cells generate here -->
+                </div>
+            </div>
+            <!-- REMOVED Opponent Fired button as requested -->
+        </section>
+    </main>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="confirm-title">Confirm</h3>
+            <p id="confirm-message"></p>
+            <div class="modal-actions">
+                <button id="confirm-yes-btn" class="btn primary">Yes</button>
+                <button id="confirm-no-btn" class="btn secondary">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task Entry Modal -->
+    <div id="task-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Assign Task to <span id="modal-coord"></span></h3>
+            <textarea id="task-input" placeholder="Enter task description..."></textarea>
+            <div class="modal-actions">
+                <button id="save-task-btn" class="btn primary">Save Task</button>
+                <button id="clear-task-btn" class="btn danger">Clear (Ocean)</button>
+                <button id="cancel-task-btn" class="btn secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Alert Modal -->
+    <div id="alert-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="alert-title">Alert</h3>
+            <p id="alert-message"></p>
+            <button id="alert-ok-btn" class="btn primary">OK</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

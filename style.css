@@ -1,0 +1,325 @@
+:root {
+    --bg-color: #0f172a;
+    --text-color: #f1f5f9;
+    --grid-bg: #1e293b;
+    --grid-line: #334155;
+    --ocean-color: #0ea5e9;
+    --ocean-deep: #0369a1;
+    --accent-gold: #f59e0b;
+    --danger-red: #ef4444;
+    --success-green: #22c55e;
+    --cell-size: 60px;
+    --font-main: 'Inter', sans-serif;
+}
+
+body {
+    background: radial-gradient(circle at top center, #1e293b, #0f172a);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+header {
+    margin-top: 2rem;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    font-size: 3rem;
+    background: linear-gradient(to right, var(--ocean-color), var(--success-green));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+#game-status {
+    color: var(--accent-gold);
+    font-weight: 600;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+main {
+    display: flex;
+    gap: 4rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.territory {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(30, 41, 59, 0.4);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s, border-color 0.3s;
+}
+
+.territory.active-turn {
+    box-shadow: 0 0 20px rgba(52, 152, 219, 0.4);
+    border-color: var(--accent-gold);
+}
+
+.territory h2 {
+    margin-top: 0;
+    color: var(--ocean-color);
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    grid-template-rows: 30px 1fr;
+    gap: 5px;
+    margin-top: 1rem;
+}
+
+.column-labels {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: repeat(3, var(--cell-size));
+    gap: 8px;
+    text-align: center;
+    font-weight: 700;
+    color: var(--ocean-deep);
+    align-items: end;
+    padding-bottom: 5px;
+}
+
+.row-labels {
+    grid-row: 2;
+    display: grid;
+    grid-template-rows: repeat(7, var(--cell-size));
+    gap: 8px;
+    align-items: center;
+    justify-content: end;
+    font-weight: 700;
+    color: var(--ocean-deep);
+    padding-right: 5px;
+}
+
+.grid {
+    grid-column: 2;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(3, var(--cell-size));
+    grid-template-rows: repeat(7, var(--cell-size));
+    gap: 8px;
+    background-color: rgba(15, 23, 42, 0.6);
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: opacity 0.3s;
+}
+
+.grid.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    filter: grayscale(0.5);
+}
+
+.cell {
+    background: rgba(30, 41, 59, 0.6);
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.cell:hover {
+    background: var(--ocean-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    border-color: var(--ocean-color);
+}
+
+.cell.has-task {
+    border: 2px solid var(--accent-gold);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.cell[draggable="true"] {
+    cursor: grab;
+}
+
+.cell[draggable="true"]:active {
+    cursor: grabbing;
+}
+
+.cell.drag-over {
+    background-color: rgba(52, 152, 219, 0.2);
+    border: 2px dashed var(--accent-gold);
+}
+
+.cell.hit {
+    background: radial-gradient(circle, #ef4444, #991b1b);
+    border-color: #f87171;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+}
+
+.cell.miss {
+    background: radial-gradient(circle, #0ea5e9, #0369a1);
+    border-color: #7dd3fc;
+    box-shadow: 0 0 15px rgba(14, 165, 233, 0.5);
+}
+
+/* Animations */
+@keyframes wave {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+}
+
+.icon-wave {
+    animation: wave 2s infinite ease-in-out;
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.icon-explosion {
+    animation: explode 0.3s ease-out forwards;
+}
+
+/* Controls */
+.controls {
+    margin-top: 1rem;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn.primary {
+    background-color: var(--ocean-color);
+    color: white;
+}
+
+.btn.primary:hover {
+    background-color: var(--ocean-deep);
+}
+
+.btn.secondary {
+    background-color: var(--grid-line);
+    color: var(--text-color);
+}
+
+.btn.secondary:hover {
+    background-color: #475569;
+}
+
+.btn.danger {
+    background-color: var(--danger-red);
+    color: white;
+}
+
+.btn.danger:hover {
+    background-color: #dc2626;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: var(--grid-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--grid-line);
+    width: 300px;
+    text-align: center;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    color: var(--accent-gold);
+}
+
+textarea,
+input[type="text"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+    border: 1px solid var(--grid-line);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: inherit;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
